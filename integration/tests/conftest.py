@@ -129,6 +129,20 @@ class MtrainClient(object):
 
         return regimen
 
+    def get_regimen_from_name(self, name):
+        response = self.api_session + \
+            .get('regimens/')
+        
+        if response.status_code != 200:
+            response.raise_for_status()
+        
+        for regimen_pointer in response.json()['objects']:
+            if regimen_pointer['name'] == name:
+                return regimen_pointer
+        else:
+            raise Exception('regimen: %s not found' % name)
+
+
     def get_mouse(self, mouse_id, join=True):
         response = self.api_session \
             .get(
@@ -183,11 +197,10 @@ class MtrainClient(object):
             .get(
                 self.mtrain_root + 'get_state/',
                 data=json.dumps(
-
+                    'regimen_name': regimen_name,
+                    'stage_name': stage_name,
                 )
             )
-
-        response = sess.get(os.path.join(api_base, 'get_state/'), data=json.dumps({'regimen_name':regimen_name, 'stage_name':initial_stage_name}))
 
     def get_stage(
         self, 
@@ -289,7 +302,7 @@ def regimen(mtrain_client):
         )
     except:
         return mtrain_client.get_regimen(
-            regimen_dict['id'],
+            mtrain_client.get_regimen_from_name(regimen_dict['name'])['id'],
             join=True,
         )
 
