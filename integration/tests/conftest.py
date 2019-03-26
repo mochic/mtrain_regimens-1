@@ -92,10 +92,10 @@ class MtrainClient(object):
         response = self.api_session \
             .post(
                 self.mtrain_root + 'add_subject/',
-                {
+                data=json.dumps({
                     'LabTracks_ID': mouse_id, 
                     'initial_state': initial_state,
-                },
+                }),
             )
         
         if response.status_code != 200:
