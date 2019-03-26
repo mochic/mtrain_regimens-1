@@ -25,9 +25,10 @@ MTRAIN_ROOT = os.environ['MTRAIN_ROOT']
 
 
 # not
-REGIMEN_YML = './assets/regimen.yml'
-TRAINING_OUTPUTS = glob.glob('./assets/*.pkl')
-PROGRESSION_YMLS = glob.glob('./progressions/*.yml')
+TEST_ROOT = os.path.dirname(os.path.abspath(__file__))
+REGIMEN_YML = os.path.join(TEST_ROOT, './assets/regimen.yml', )
+TRAINING_OUTPUTS = glob.glob(os.path.join(TEST_ROOT, './assets/*.pkl', ))
+PROGRESSION_YMLS = glob.glob(os.path.join(TEST_ROOT,'./progressions/*.yml'))
 
 # utils
 def resolve_epoch_bound(value, n_trials):
@@ -249,9 +250,7 @@ class MtrainClient(object):
         return response.json()
 
 
-@pytest.fixture(
-    scope='module',
-)
+@pytest.fixture(scope='module')
 def mtrain_client(request):
     return MtrainClient(
         username=MTRAIN_USERNAME,

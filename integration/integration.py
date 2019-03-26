@@ -43,18 +43,18 @@ def init_user(
 def init_assets(*training_outputs):
     shutil.copyfile(
         '../regimen.yml', 
-        './mtrain_regimens_tests/assets/regimen.yml',
+        './tests/assets/regimen.yml',
     )
     for training_output in training_outputs:
         shutil.copyfile(
             training_output,
-            './mtrain_regimens_tests/assets/training_output.pkl'
+            './tests/assets/training_output.pkl'
         )
 
 
 def run_tests():
     subprocess.run(
-        'pytest ./mtrain_regimens_tests',
+        'pytest',
         check=True,
         shell=True,
     )  # inherit parent process context
