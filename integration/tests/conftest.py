@@ -281,11 +281,19 @@ def mtrain_client(request):
 @pytest.fixture(scope='module')
 def regimen(mtrain_client):
     with open(REGIMEN_YML, 'r') as rstream:
-        response = mtrain_client.create_regimen(
-            yaml.load(rstream.read()),
+        regimen_dict = yaml.load(rstream.read())
+    
+    response = mtrain_client.create_regimen(
+        regimen_dict,
+    )
+
+    if response.status_code == 409:
+        response = mtrain_client.get_regimen(
+            regimen_dict['id'],
+            join=True,
         )
 
-    if response != 200:
+    if response.status_code != 200:
         response.raise_for_status()
     
     return regimen.json()
