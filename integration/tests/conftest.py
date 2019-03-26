@@ -286,7 +286,7 @@ def regimen(mtrain_client):
         )
 
     if response != 200:
-        reponse.raise_for_status()
+        response.raise_for_status()
     
     return regimen.json()
 
