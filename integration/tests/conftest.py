@@ -3,6 +3,7 @@ import pytest
  # maybe we want remote logging or something...
  # really i have no idea...
 import glob
+import json
 import logging
 import os
 import pandas as pd
@@ -158,9 +159,11 @@ class MtrainClient(object):
         """get mtrain's state
         """
         if join:
-            response = self.api_session + \
-                'join/states/%s' % state_id \
-                .get()
+            response = self.api_session \
+                .get(
+                    self.mtrain_root + \
+                    'join/states/%s' % state_id
+                )
         else:
             response = self.api_session + \
                 'states/%s' % state_id \
@@ -170,6 +173,21 @@ class MtrainClient(object):
             response.raise_for_status()
 
         return response.json()
+
+    def get_state_from_stage(
+        self,
+        regimen_name,
+        stage_name,
+    ):
+        response = self.api_session \
+            .get(
+                self.mtrain_root + 'get_state/',
+                data=json.dumps(
+
+                )
+            )
+
+        response = sess.get(os.path.join(api_base, 'get_state/'), data=json.dumps({'regimen_name':regimen_name, 'stage_name':initial_stage_name}))
 
     def get_stage(
         self, 
@@ -325,12 +343,16 @@ for config_path in PROGRESSION_YMLS:
 def progression_plan(
     mouse_factory,
     mtrain_client,
+    regimen,
     request,
     behavior_session_base,
 ):
     initial_stage = request.param['initial_stage']
     mouse_meta = mouse_factory(
-        initial_stage=initial_stage,
+        initial_state=mtrain_client.get_state_from_stage_name(
+            regimen_name=regimen['name'],
+            stage_name=initial_stage,
+        )
     )
     
     progression_plan = {
