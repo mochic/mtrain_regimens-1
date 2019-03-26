@@ -101,7 +101,7 @@ class MtrainClient(object):
         if response.status_code != 200:
             response.raise_for_status()
 
-        return response.json()
+        # return response.json()  # the post doesnt return the record added?
 
     def create_regimen(self, regimen_dict):
         response = self.api_session \
