@@ -76,11 +76,10 @@ def init_user(
                 password=password,
             )
         )
-    import stat
-    os.chmod(vector_script, stat.S_IRWXO)  
+     
     subprocess.run(
         'docker cp {target} {dest}'.format(
-            target=vector_script,
+            target='temp.py',
             dest='%s:/home/mtrain/app/mtrain_api' % \
                 mtrain_api_container,
         ),
@@ -92,7 +91,7 @@ def init_user(
         'docker exec {container_name} {command}'.format(
             container_name=mtrain_api_container,
             command='python %s' % \
-                os.path.basename(vector_script),
+                'temp.py',
         ), 
         check=True,
         shell=True,
