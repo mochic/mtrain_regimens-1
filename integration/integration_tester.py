@@ -62,12 +62,14 @@ def run_tests():
 
 
 meta = init()
-
-init_user( 
-    username=os.environ['MTRAIN_USERNAME'], 
-    password=os.environ['MTRAIN_PASSWORD'], 
-    mtrain_api_container=os.environ['MTRAIN_CONTAINER'],
-)
+try:
+    init_user( 
+        username=os.environ['MTRAIN_USERNAME'], 
+        password=os.environ['MTRAIN_PASSWORD'], 
+        mtrain_api_container=os.environ['MTRAIN_CONTAINER'],
+    )
+except:
+    pass  # todo make more elegant
 
 # so we know where the regimen file is
 os.environ['MTRAIN_REGIMEN_YML'] = meta['regimen_yml']
