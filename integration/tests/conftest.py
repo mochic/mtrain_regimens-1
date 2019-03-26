@@ -376,11 +376,13 @@ def progression_plan(
     behavior_session_base,
 ):
     initial_stage = request.param['initial_stage']
+    initial_state = mtrain_client.get_state_from_stage(
+        regimen_name=regimen['name'],
+        stage_name=initial_stage,
+    )
+    raise ValueError(initial_stage, initial_state)
     mouse_meta = mouse_factory(
-        initial_state=mtrain_client.get_state_from_stage(
-            regimen_name=regimen['name'],
-            stage_name=initial_stage,
-        )
+        initial_state=initial_state,
     )
     
     progression_plan = {
