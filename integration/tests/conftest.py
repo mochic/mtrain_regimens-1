@@ -283,20 +283,15 @@ def regimen(mtrain_client):
     with open(REGIMEN_YML, 'r') as rstream:
         regimen_dict = yaml.load(rstream.read())
     
-    response = mtrain_client.create_regimen(
-        regimen_dict,
-    )
-
-    if response.status_code == 409:
-        response = mtrain_client.get_regimen(
+    try:
+        return mtrain_client.create_regimen(
+            regimen_dict,
+        )
+    except:
+        return mtrain_client.get_regimen(
             regimen_dict['id'],
             join=True,
         )
-
-    if response.status_code != 200:
-        response.raise_for_status()
-    
-    return regimen.json()
 
 
 @pytest.fixture(scope='module')  # hopefully we dont accidentally cause a sideeffect?
