@@ -341,9 +341,11 @@ def mouse_factory(mtrain_client):
         max_attempts = 15
         for _ in range(max_attempts):
             try:
+                mouse_id = str(randint(100000, 999999))
+                print(mouse_id, initial_state)
                 return mtrain_client \
                     .create_mouse(
-                        mouse_id=str(randint(100000, 999999)),
+                        mouse_id=mouse_id,
                         initial_state=initial_state,
                     )
             except:
@@ -385,7 +387,7 @@ def progression_plan(
         regimen_name=regimen['name'],
         stage_name=initial_stage,
     )
-
+    
     mouse_meta = mouse_factory(
         initial_state=initial_state,
     )
