@@ -196,10 +196,10 @@ class MtrainClient(object):
         response = self.api_session \
             .get(
                 self.mtrain_root + 'get_state/',
-                data=json.dumps(
+                data=json.dumps({
                     'regimen_name': regimen_name,
                     'stage_name': stage_name,
-                )
+                })
             )
 
     def get_stage(
