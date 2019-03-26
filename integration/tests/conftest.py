@@ -114,6 +114,7 @@ class MtrainClient(object):
         response = self.api_session \
             .get(
                 self.mtrain_root + \
+                    'api/v1/' + \
                     'regimens/%s' % regimen_id
             )
         
@@ -131,7 +132,7 @@ class MtrainClient(object):
 
     def get_regimen_from_name(self, name):
         response = self.api_session \
-            .get(self.mtrain_root + 'regimens/')
+            .get(self.mtrain_root + 'api/v1/' + 'regimens/')
         
         if response.status_code != 200:
             response.raise_for_status()
@@ -147,6 +148,7 @@ class MtrainClient(object):
         response = self.api_session \
             .get(
                 self.mtrain_root + \
+                    'api/v1/' + \
                     'subjects/%s' % mouse_id,
             )
 
@@ -176,10 +178,12 @@ class MtrainClient(object):
             response = self.api_session \
                 .get(
                     self.mtrain_root + \
+                    'api/v1/' + \
                     'join/states/%s' % state_id
                 )
         else:
             response = self.api_session + \
+                'api/v1/' + \
                 'states/%s' % state_id \
                 .get()
         
