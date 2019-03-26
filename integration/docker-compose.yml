@@ -9,8 +9,7 @@ services:
     volumes:
       - ./scripts:/home/mtrain/app/mtrain_api/scripts
     depends_on:
-      - postgres_testdb:
-        condition: service_healthy
+      - postgres_testdb
 
   postgres_testdb:
     image: postgres:9.4
@@ -18,8 +17,3 @@ services:
       - 5432
     environment:
       - POSTGRES_DB=mtrain_test
-    healthcheck:
-      test: ['CMD SHELL', 'pg_isready -U postgres']
-      interval: 1s
-      timeout: 1s
-      retries: 30
