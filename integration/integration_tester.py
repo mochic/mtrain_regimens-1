@@ -52,7 +52,9 @@ def run_tests():
     )  # inherit parent process context
 
 
-init_regimen()
+init_regimen(
+    mtrain_api_container=os.environ['MTRAIN_CONTAINER'],
+)
 
 try:
     init_user( 
