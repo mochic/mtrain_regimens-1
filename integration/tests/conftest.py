@@ -280,7 +280,7 @@ def mtrain_client(request):
 
 @pytest.fixture(scope='module')
 def regimen(mtrain_client):
-    with open('./assets/regimen.yml', 'r') as rstream:
+    with open(REGIMEN_YML, 'r') as rstream:
         response = mtrain_client.create_regimen(
             yaml.load(rstream.read()),
         )
