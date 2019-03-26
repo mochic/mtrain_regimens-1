@@ -45,7 +45,7 @@ def init_assets(*training_outputs):
         '../regimen.yml', 
         './mtrain_regimens_tests/assets/regimen.yml',
     )
-    for training_outputs in training_outputs:
+    for training_output in training_outputs:
         shutil.copyfile(
             training_output,
             './mtrain_regimens_tests/assets/training_output.pkl'
