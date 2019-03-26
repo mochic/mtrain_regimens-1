@@ -369,7 +369,7 @@ def progression_plan(
 ):
     initial_stage = request.param['initial_stage']
     mouse_meta = mouse_factory(
-        initial_state=mtrain_client.get_state_from_stage_name(
+        initial_state=mtrain_client.get_state_from_stage(
             regimen_name=regimen['name'],
             stage_name=initial_stage,
         )
