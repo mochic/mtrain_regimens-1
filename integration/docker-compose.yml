@@ -9,7 +9,7 @@ services:
     volumes:
       - ./scripts:/home/mtrain/app/mtrain_api/scripts
     depends_on:
-      postgres_testdb:
+      - postgres_testdb:
         condition: service_healthy
 
   postgres_testdb:
