@@ -20,6 +20,8 @@ Session = sessionmaker(bind=engine)
 
 session = Session()
 
+User.metadata.create_all(engine)
+
 session.add(
     User(
         username=sys.argv[1], 
