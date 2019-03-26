@@ -76,7 +76,7 @@ class MtrainClient(object):
     
         # authenticate user
         response = self.api_session.post(
-            self.mtrain_root,
+            'http://localhost:5000',
             data={
                 'username': username,
                 'password': password,
