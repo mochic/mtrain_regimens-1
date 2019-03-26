@@ -4,6 +4,14 @@
 import subprocess
 
 
+def init_services():
+    subprocess.run(
+        'docker-compose up',
+        check=True,
+        shell=True,
+    )
+
+
 def init_user(
     username, 
     password, 
@@ -33,6 +41,8 @@ def run_tests():
 
 if __name__ == '__main__':
     import os
+
+    init_services()
 
     try:
         init_user( 
