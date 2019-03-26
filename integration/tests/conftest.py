@@ -342,11 +342,11 @@ def mouse_factory(mtrain_client):
         for _ in range(max_attempts):
             try:
                 mouse_id = str(randint(100000, 999999))
-                print(mouse_id, initial_state)
+                # print(mouse_id, initial_state)
                 return mtrain_client \
                     .create_mouse(
                         mouse_id=mouse_id,
-                        initial_state=initial_state,
+                        state=initial_state,
                     )
             except Exception as e:
                 print(e)
