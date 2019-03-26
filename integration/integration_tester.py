@@ -7,42 +7,6 @@ import subprocess
 from tempfile import mkstemp
 
 
-INIT_USER_SCRIPT_TEMPLATE = \
-"""
-#/usr/bin/env
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.engine.url import URL
-
-from mtrain_api.user.models import User
-
-
-engine = create_engine(URL(
-    'postgresql',
-    username='postgres',
-    password='postgres',
-    port=5432,
-    database='mtrain_test',
-    host='postgres_testdb'
-))
-
-Session = sessionmaker(bind=engine)
-
-session = Session()
-
-session.add(
-    User(
-        username='{username}', 
-        password='{password}', 
-        email='whoevencares@email.com', 
-        active=True, 
-    )
-)
-session.commit()
-"""
-
-
 def init():
     # make a copy of the regimen for the tests
     _, regimen_yml = mkstemp(
@@ -78,8 +42,8 @@ def init_user(
         )
      
     subprocess.run(
-        'docker cp {target} {dest}'.format(
-            target='temp.py',
+        'docker cp {src} {dest}'.format(
+            src='init_user_script.py',
             dest='%s:/home/mtrain/app/mtrain_api' % \
                 mtrain_api_container,
         ),
@@ -90,9 +54,13 @@ def init_user(
     subprocess.run(
         'docker exec {container_name} {command}'.format(
             container_name=mtrain_api_container,
-            command='python %s' % \
-                'temp.py',
-        ), 
+            command='python {script} {username} {password}' \
+                .format(
+                    script='init_user_script.py',
+                    username=username,
+                    password=password,
+                ),
+        ),
         check=True,
         shell=True,
     )
