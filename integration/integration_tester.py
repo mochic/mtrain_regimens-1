@@ -2,25 +2,16 @@
 # timing and intricate stuff? lel...
 # no idea why this code looks so weird...~.~
 import os
-import shutil
 import subprocess
-from tempfile import mkstemp
 
 
-def init():
-    # make a copy of the regimen for the tests
-    _, regimen_yml = mkstemp(
-        suffix='.yml',
-        dir='./assets',
+def init_regimen(mtrain_api_container):
+    subprocess.run(
+        'docker cp ../regimen.yml %s:/home/mtrain/app/mtrain_api' %s \
+            mtrain_api_container,
+        check=True,
+        shell=True,
     )
-    
-    with open('../regimen.yml', 'r') as src, \
-            open(regimen_yml, 'w') as dest:
-        dest.write(src.read())
-
-    return {
-        'regimen_yml': regimen_yml, 
-    }
 
 
 def init_user(
@@ -61,7 +52,8 @@ def run_tests():
     )  # inherit parent process context
 
 
-meta = init()
+init_regimen()
+
 try:
     init_user( 
         username=os.environ['MTRAIN_USERNAME'], 
@@ -70,8 +62,5 @@ try:
     )
 except:
     pass  # todo make more elegant
-
-# so we know where the regimen file is
-os.environ['MTRAIN_REGIMEN_YML'] = meta['regimen_yml']
 
 run_tests()
