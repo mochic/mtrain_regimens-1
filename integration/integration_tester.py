@@ -7,7 +7,7 @@ import subprocess
 
 def init_regimen(mtrain_api_container):
     subprocess.run(
-        'docker cp ../regimen.yml %s:/home/mtrain/app/mtrain_api' %s \
+        'docker cp ../regimen.yml %s:/home/mtrain/app/mtrain_api' % \
             mtrain_api_container,
         check=True,
         shell=True,
