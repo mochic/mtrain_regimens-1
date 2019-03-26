@@ -211,6 +211,11 @@ class MtrainClient(object):
                 })
             )
 
+        if response.status_code != 200:
+            response.raise_for_status()
+        
+        return response.json()
+
     def get_stage(
         self, 
         mouse_id,
@@ -380,7 +385,7 @@ def progression_plan(
         regimen_name=regimen['name'],
         stage_name=initial_stage,
     )
-    raise ValueError(initial_stage, initial_state)
+
     mouse_meta = mouse_factory(
         initial_state=initial_state,
     )
