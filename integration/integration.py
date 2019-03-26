@@ -1,15 +1,24 @@
 # python integration test runner...control?
 # no idea why this code looks so weird...~.~
+import logging
+import requests
 import shutil
 import subprocess
+import time
 
 
 def init_services():
-    subprocess.run(
-        'docker-compose up',
-        check=True,
-        shell=True,
-    )
+    subprocess.run('docker-compose up', check=True, shell=False, )
+    logging.info('waiting for services to be available...', )
+    tic = time.time()
+    while time.time() - tic > 600:  # ~10 minutes max wait time
+        response = requests.get(
+            'http://localhost:5000/',
+        )
+        if response.status_code == 200:
+            break
+
+        time.sleep(5)
 
 
 def init_user(
