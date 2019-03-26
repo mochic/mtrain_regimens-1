@@ -279,10 +279,10 @@ def behavior_session_base():
         pd.read_pickle(TRAINING_OUTPUTS[0]),  # just use one for now...somehow couple it with progressions
     )
     return create_extended_dataframe(
-        trials=core_data['trials'],
-        metadata=core_data['metadata'],
-        licks=core_data['licks'],
-        time=core_data['time'],
+        trials=core['trials'],
+        metadata=core['metadata'],
+        licks=core['licks'],
+        time=core['time'],
     )
 
 
