@@ -1,6 +1,7 @@
 # integration test runner written in python to coordinate 
 # timing and intricate stuff? lel...
 # no idea why this code looks so weird...~.~
+import os
 import shutil
 import subprocess
 from tempfile import mkstemp
@@ -8,6 +9,8 @@ from tempfile import mkstemp
 
 INIT_USER_SCRIPT_TEMPLATE = \
 """
+#/usr/bin/env
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.engine.url import URL
@@ -73,41 +76,46 @@ def init_user(
                 password=password,
             )
         )
-    
-    subprocess.run([
+    import stat
+    os.chmod(vector_script, stat.S_IRWXO)  
+    subprocess.run(
         'docker cp {target} {dest}'.format(
             target=vector_script,
             dest='%s:/home/mtrain/app/mtrain_api' % \
                 mtrain_api_container,
         ),
-    ], check=True, shell=False, )
+        check=True,
+        shell=True,
+    )
 
-    subprocess.run([
+    subprocess.run(
         'docker exec {container_name} {command}'.format(
             container_name=mtrain_api_container,
-            command='python %s' % vector_script,
-        ),
-    ], check=True, shell=False, )
+            command='python %s' % \
+                os.path.basename(vector_script),
+        ), 
+        check=True,
+        shell=True,
+    )
 
 
 def run_tests():
-    subprocess.run([
+    subprocess.run(
         'pytest ./mtrain_regimens_tests',
-    ], check=True, shell=False, )  # inherit parent process context
+        check=True,
+        shell=True,
+    )  # inherit parent process context
 
 
-if __name__ == "__main__":
-    import os
+meta = init()
 
-    meta = init()
-    init_user( 
-        username=os.environ['MTRAIN_USERNAME'], 
-        password=os.environ['MTRAIN_PASSWORD'], 
-        mtrain_api_container=os.environ['MTRAIN_CONTAINER_ID'],
-    )
+init_user( 
+    username=os.environ['MTRAIN_USERNAME'], 
+    password=os.environ['MTRAIN_PASSWORD'], 
+    mtrain_api_container=os.environ['MTRAIN_CONTAINER'],
+)
 
-    # so we know where the regimen file is
-    os.environ['MTRAIN_REGIMEN_YML'] = \
-        meta['regimen_yml']
-    
-    run_tests()
+# so we know where the regimen file is
+os.environ['MTRAIN_REGIMEN_YML'] = meta['regimen_yml']
+
+run_tests()
