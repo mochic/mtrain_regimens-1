@@ -286,7 +286,7 @@ def behavior_session_base():
     )
 
 
-@pytest.mark.fixture(scope='function')
+@pytest.fixture(scope='function')
 def mouse_factory(mtrain_client):
     def wrapped_mouse_factory(initial_state):
         # its always random, ill build the non-random some other time?
