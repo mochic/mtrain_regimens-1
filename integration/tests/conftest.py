@@ -132,7 +132,7 @@ class MtrainClient(object):
 
     def get_regimen_from_name(self, name):
         response = self.api_session \
-            .get(self.mtrain_root + 'api/v1/' + 'regimens/')
+            .get(self.mtrain_root + 'api/v1/' + 'regimens')
         
         if response.status_code != 200:
             response.raise_for_status()
