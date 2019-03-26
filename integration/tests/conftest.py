@@ -335,11 +335,14 @@ def mouse_factory(mtrain_client):
         # its always random, ill build the non-random some other time?
         max_attempts = 15
         for _ in range(max_attempts):
-            return mtrain_client \
-                .create_mouse(
-                    mouse_id=str(randint(100000, 999999)),
-                    initial_state=initial_state,
-                )
+            try:
+                return mtrain_client \
+                    .create_mouse(
+                        mouse_id=str(randint(100000, 999999)),
+                        initial_state=initial_state,
+                    )
+            except:
+                pass
         else:
             raise Exception(
                 'exceeded max attempts: %s' % max_attempts,
