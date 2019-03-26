@@ -15,7 +15,7 @@ from visual_behavior.translator.core import create_extended_dataframe
 from visual_behavior.schemas.extended_trials import ExtendedTrialSchema
 from visual_behavior.translator.foraging2 import data_to_change_detection_core
 
-import progressions from './progressions'
+from progressions import './progressions'
 
 
 # configurable
