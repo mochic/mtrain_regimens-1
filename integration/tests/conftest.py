@@ -349,7 +349,7 @@ def mouse_factory(mtrain_client):
                         initial_state=initial_state,
                     )
             except Exception as e:
-                print(e)
+                raise e
         else:
             raise Exception(
                 'exceeded max attempts: %s' % max_attempts,
