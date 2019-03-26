@@ -6,6 +6,10 @@ services:
     working_dir: /home/mtrain/app/mtrain_api
     ports:
       - 5000
+    environment:
+      - FLASK_DEBUG=1
+      - TEST=1
+      - WEBPACK_MANIFEST_PATH=/home/mtrain/app/mtrain_api/mtrain_api/webpack/manifest.json
     volumes:
       - ./scripts:/home/mtrain/app/mtrain_api/scripts
     depends_on:
