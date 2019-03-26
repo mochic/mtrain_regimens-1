@@ -94,7 +94,7 @@ class MtrainClient(object):
                 self.mtrain_root + 'add_subject/',
                 data=json.dumps({
                     'LabTracks_ID': mouse_id, 
-                    'initial_state': initial_state,
+                    'state': initial_state,
                 }),
             )
         
@@ -346,7 +346,7 @@ def mouse_factory(mtrain_client):
                 return mtrain_client \
                     .create_mouse(
                         mouse_id=mouse_id,
-                        state=initial_state,
+                        initial_state=initial_state,
                     )
             except Exception as e:
                 print(e)
