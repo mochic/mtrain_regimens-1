@@ -1,18 +1,7 @@
 # integration test runner written in python to coordinate 
 # timing and intricate stuff? lel...
 # no idea why this code looks so weird...~.~
-import os
 import subprocess
-
-
-def init_assets(mtrain_api_container):
-    # add regimen and behavior file here
-    subprocess.run(
-        'docker cp ../regimen.yml %s:/home/mtrain/app/mtrain_api' % \
-            mtrain_api_container,
-        check=True,
-        shell=True,
-    )
 
 
 def init_user(
@@ -21,21 +10,10 @@ def init_user(
     mtrain_api_container,
 ):   
     subprocess.run(
-        'docker cp {src} {dest}'.format(
-            src='init_user_script.py',
-            dest='%s:/home/mtrain/app/mtrain_api' % \
-                mtrain_api_container,
-        ),
-        check=True,
-        shell=True,
-    )
-
-    subprocess.run(
         'docker exec {container_name} {command}'.format(
             container_name=mtrain_api_container,
-            command='python {script} {username} {password}' \
+            command='python init_user_script.py {username} {password}' \
                 .format(
-                    script='init_user_script.py',
                     username=username,
                     password=password,
                 ),
@@ -53,17 +31,16 @@ def run_tests():
     )  # inherit parent process context
 
 
-init_assets(
-    mtrain_api_container=os.environ['MTRAIN_CONTAINER'],
-)
+if __name__ == '__main__':
+    import os
 
-try:
-    init_user( 
-        username=os.environ['MTRAIN_USERNAME'], 
-        password=os.environ['MTRAIN_PASSWORD'], 
-        mtrain_api_container=os.environ['MTRAIN_CONTAINER'],
-    )
-except:
-    pass  # todo make more elegant
+    try:
+        init_user( 
+            username=os.environ['MTRAIN_USERNAME'], 
+            password=os.environ['MTRAIN_PASSWORD'], 
+            mtrain_api_container=os.environ['MTRAIN_CONTAINER'],
+        )
+    except:
+        pass  # todo make more elegant
 
-run_tests()
+    run_tests()

@@ -13,7 +13,7 @@ def test_regimen(
 
     for progression in progression_plan['progressions']:
         assert mtrain_client.get_stage(mouse_id) == \
-            progression['start_state'], \ 
+            progression['start_stage'], \ 
             'start at expected stage'
 
         mtrain_client.progress(
@@ -22,4 +22,5 @@ def test_regimen(
         )
 
         assert mtrain_client.get_stage(mouse_id)['name'] == \
-            end_state, 'end at expected stage'
+            progression['end_stage'], \
+            'end at expected stage'

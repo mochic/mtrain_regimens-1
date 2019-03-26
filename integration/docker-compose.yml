@@ -1,7 +1,25 @@
 version: '3'
 services:
-  mtrain_api_fixture:
-    image: ${MTRAIN_IMAGE}
+  mtrain_api:
+    image: docker.aibs-artifactory.corp.alleninstitute.org/mtrain_api:0.2.8
     container_name: ${MTRAIN_CONTAINER}
+    working_dir: /home/mtrain/app/mtrain_api
     ports:
       - 5000
+    volumes:
+      - init_user_script.py:/home/mtrain/app/mtrain_api/init_user_script.py
+    depends_on:
+      postgres_testdb:
+        condition: service_healthy
+
+  postgres_testdb:
+    image: postgres:9.4
+    ports:
+      - 5432
+    environment:
+      - POSTGRES_DB=mtrain_test
+    health_check:
+      test: ['CMD SHELL', 'pg_isready -U postgres']
+      interval: 1s
+      timeout: 1s
+      retries: 30

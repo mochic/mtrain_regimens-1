@@ -19,6 +19,7 @@ MTRAIN_USERNAME = os.environ['MTRAIN_USERNAME']
 MTRAIN_PASSWORD = os.environ['MTRAIN_PASSWORD']
 MTRAIN_ROOT = os.environ['MTRAIN_ROOT']
 TRAINING_OUTPUT = os.environ['TRAINING_OUTPUT']
+REGIMEN_PATH = os.environ['REGIMEN_PATH']
 
 # is this code structure great for easy reading in
 # version control? i often code alone so i really have
@@ -209,7 +210,7 @@ class MtrainClient(object):
 
 @pytest.fixture(scope='module')
 def regimen(mtrain_client):
-    with open('../assets/regimen.yml', 'r') as rstream:
+    with open(REGIMEN_PATH, 'r') as rstream:
         response = mtrain_client.create_regimen(
             yaml.load(rstream.read()),
         )
@@ -308,22 +309,22 @@ def progression_plan(
     request,
     behavior_session_base,
 ):
-    initial_state = request.param['initial_state']
+    initial_stage = request.param['initial_stage']
     mouse_meta = mouse_factory(
-        initial_state=initial_state,
+        initial_stage=initial_stage,
     )
     
     progression_plan = {
         'mouse_meta': mouse_meta,
-        'initial_state': initial_state,
-        'progressions': []
+        'initial_stage': initial_stage,
+        'progressions': [],
     }
     for progression_dict in request.param['progressions']:
         progression = {
-            'start_state': \
-                progression_dict['start_state'],
-            'end_state': \
-                progression_dict['end_state'],
+            'start_stage': \
+                progression_dict['start_stage'],
+            'end_stage': \
+                progression_dict['end_stage'],
         }
 
         behavior_session = behavior_session_base \

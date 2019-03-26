@@ -6,6 +6,7 @@ from sqlalchemy.engine.url import URL
 from mtrain_api.user.models import User
 
 
+# TODO pass this down entirely as a container link
 engine = create_engine(URL(
     'postgresql',
     username='postgres',
