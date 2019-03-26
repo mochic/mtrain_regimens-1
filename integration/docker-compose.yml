@@ -7,7 +7,7 @@ services:
     ports:
       - 5000
     volumes:
-      - init_user_script.py:/home/mtrain/app/mtrain_api/init_user_script.py
+      - ./scripts:/home/mtrain/app/mtrain_api/scripts
     depends_on:
       postgres_testdb:
         condition: service_healthy

@@ -2,6 +2,7 @@ import pytest
 
  # maybe we want remote logging or something...
  # really i have no idea...
+import glob
 import logging
 import os
 import pandas as pd
@@ -14,16 +15,40 @@ from visual_behavior.translator.core import create_extended_dataframe
 from visual_behavior.schemas.extended_trials import ExtendedTrialSchema
 from visual_behavior.translator.foraging2 import data_to_change_detection_core
 
+import progressions from './progressions'
 
+
+# configurable
 MTRAIN_USERNAME = os.environ['MTRAIN_USERNAME']
 MTRAIN_PASSWORD = os.environ['MTRAIN_PASSWORD']
 MTRAIN_ROOT = os.environ['MTRAIN_ROOT']
-TRAINING_OUTPUT = os.environ['TRAINING_OUTPUT']
-REGIMEN_PATH = os.environ['REGIMEN_PATH']
 
-# is this code structure great for easy reading in
-# version control? i often code alone so i really have
-# no idea..
+
+# not
+REGIMEN_YML = './assets/regimen.yml'
+TRAINING_OUTPUTS = glob.glob('./assets/*.pkl')
+PROGRESSION_YMLS = glob.glob('./progressions/*.yml')
+
+# utils
+def resolve_epoch_bound(value, n_trials):
+    if isinstance(value, int) or \
+            isinstance(value, float):
+        return value
+    elif isinstance(value, basestring):
+        if value == 'start':
+            return 0
+        elif value == 'middle':
+            return n_trials / 2
+        elif value == 'end':
+            return n_trials
+    else:
+        raise ValueError(
+            'unsupported epoch value type: {}' \
+                .format(type(value)),
+        )
+
+
+# mtrain api client
 class MtrainClient(object):
     """embedded because i prefer less files to look at...
     """
@@ -44,7 +69,7 @@ class MtrainClient(object):
         self.__mtrain_root = mtrain_root
         self.__api_session = requests.Session()
         # always raise for status if we dont get 200
-        # self.__api_session.hooks['response'].append(
+        # self.api_session.hooks['response'].append(
         #     lambda r, *args, **kwargs: r.raise_for_status(),
         # )
     
@@ -224,9 +249,20 @@ class MtrainClient(object):
         return response.json()
 
 
+@pytest.fixture(
+    scope='module',
+)
+def mtrain_client(request):
+    return MtrainClient(
+        username=MTRAIN_USERNAME,
+        password=MTRAIN_PASSWORD,
+        mtrain_root=MTRAIN_ROOT,
+    )
+
+
 @pytest.fixture(scope='module')
 def regimen(mtrain_client):
-    with open(REGIMEN_PATH, 'r') as rstream:
+    with open('./assets/regimen.yml', 'r') as rstream:
         response = mtrain_client.create_regimen(
             yaml.load(rstream.read()),
         )
@@ -240,7 +276,7 @@ def regimen(mtrain_client):
 @pytest.fixture(scope='module')  # hopefully we dont accidentally cause a sideeffect?
 def behavior_session_base():
     core = data_to_change_detection_core(
-        pd.read_pickle(TRAINING_OUTPUT),
+        pd.read_pickle(TRAINING_OUTPUTS[0]),  # just use one for now...somehow couple it with progressions
     )
     return create_extended_dataframe(
         trials=core_data['trials'],
@@ -250,20 +286,7 @@ def behavior_session_base():
     )
 
 
-@pytest.fixture(
-    scope='module',
-)
-def mtrain_client(request):
-    return MtrainClient(
-        username=MTRAIN_USERNAME,
-        password=MTRAIN_PASSWORD,
-        mtrain_root=MTRAIN_ROOT,
-    )
-
-
-@pytest.mark.fixture(
-    scope='function',
-)
+@pytest.mark.fixture(scope='function')
 def mouse_factory(mtrain_client):
     def wrapped_mouse_factory(initial_state):
         # its always random, ill build the non-random some other time?
@@ -284,33 +307,11 @@ def mouse_factory(mtrain_client):
 
 progression_ids = []
 progression_params = []
-for config_name in os.listdir('./progressions'):
-    config_path = os.path.join(
-        './progressions', 
-        config_name,
-    )
+for config_path in PROGRESSION_YMLS:
     with open(config_path, 'r', ) as pstream:
         progression_ids.append(config_name)
         progression_params.append(
             yaml.load(pstream.read()),
-        )
-
-
-def resolve_epoch_bound(value, n_trials):
-    if isinstance(value, int) or \
-            isinstance(value, float):
-        return value
-    elif isinstance(value, basestring):
-        if value == 'start':
-            return 0
-        elif value == 'middle':
-            return n_trials / 2
-        elif value == 'end':
-            return n_trials
-    else:
-        raise ValueError(
-            'unsupported epoch value type: {}' \
-                .format(type(value)),
         )
 
 

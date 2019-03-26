@@ -1,6 +1,6 @@
-# integration test runner written in python to coordinate 
-# timing and intricate stuff? lel...
+# python integration test runner...control?
 # no idea why this code looks so weird...~.~
+import shutil
 import subprocess
 
 
@@ -16,11 +16,11 @@ def init_user(
     username, 
     password, 
     mtrain_api_container,
-):   
+):
     subprocess.run(
         'docker exec {container_name} {command}'.format(
             container_name=mtrain_api_container,
-            command='python init_user_script.py {username} {password}' \
+            command='python ./scripts/init_user_script.py {username} {password}' \
                 .format(
                     username=username,
                     password=password,
@@ -29,6 +29,18 @@ def init_user(
         check=True,
         shell=True,
     )
+
+
+def init_assets(*training_outputs):
+    shutil.copyfile(
+        '../regimen.yml', 
+        './mtrain_regimens_tests/assets/regimen.yml',
+    )
+    for training_outputs in training_outputs:
+        shutil.copyfile(
+            training_output,
+            './mtrain_regimens_tests/assets/training_output.pkl'
+        )
 
 
 def run_tests():
@@ -52,5 +64,7 @@ if __name__ == '__main__':
         )
     except:
         pass  # todo make more elegant
+
+    init_assets(os.environ['TRAINING_OUTPUT'], )
 
     run_tests()
