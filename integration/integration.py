@@ -7,15 +7,15 @@ import subprocess
 import time
 
 
-def init_services():
-    subprocess.run('docker-compose up', check=True, shell=False, )
+def init_services(mtrain_root):
+    daemon = subprocess.Popen(
+        ['docker-compose', 'up', ], 
+    )
     logging.info('waiting for services to be available...', )
     tic = time.time()
     while time.time() - tic > 600:  # ~10 minutes max wait time
-        response = requests.get(
-            'http://localhost:5000/',
-        )
-        if response.status_code == 200:
+        if requests.get(mtrain_root) \
+                .status_code == 200:
             break
 
         time.sleep(5)
@@ -63,7 +63,9 @@ def run_tests():
 if __name__ == '__main__':
     import os
 
-    init_services()
+    init_services(
+        mtrain_root=os.environ['MTRAIN_ROOT'],
+    )
 
     try:
         init_user( 
