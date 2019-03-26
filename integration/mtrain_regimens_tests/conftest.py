@@ -43,6 +43,10 @@ class MtrainClient(object):
     ):  
         self.__mtrain_root = mtrain_root
         self.__api_session = requests.Session()
+        # always raise for status if we dont get 200
+        # self.__api_session.hooks['response'].append(
+        #     lambda r, *args, **kwargs: r.raise_for_status(),
+        # )
     
         # authenticate user
         response = self.api_session.post(
@@ -144,14 +148,20 @@ class MtrainClient(object):
         self, 
         mouse_id,
     ):
-        return self.get_mouse(mouse_id, join=True)['stage']
+        return self.get_mouse(
+            mouse_id, 
+            join=True, 
+        )['stage']
 
     def set_stage(
         self, 
         mouse_id, 
         stage_name,
     ):
-        mouse_meta = self.get_mouse(mouse_id, join=False)
+        mouse_meta = self.get_mouse(
+            mouse_id, 
+            join=False,
+        )
         regimen = self.get_regimen(
             mouse_meta['state']['regimen_id'],
             join=True,
@@ -162,7 +172,13 @@ class MtrainClient(object):
             regimen['states'],
         )
 
-        # use only values from the match just incase...        
+        if not len(matches) > 0:
+            raise Exception(
+                'stage: {} not found for mouse_id: {}' \
+                    .format(stage_name, mouse_id, )
+            )
+
+        # use only values from the match just incase...      
         return self.set_state(
             mouse_id=mouse_id,
             regimen_id=matches[0]['regimen']['id'],
