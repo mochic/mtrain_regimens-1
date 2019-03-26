@@ -68,7 +68,7 @@ class MtrainClient(object):
         mtrain_root,
     ):  
         self.__mtrain_root = mtrain_root
-        self.__api_session = requests.Session()
+        self.__api_session = requests.session()
         # always raise for status if we dont get 200
         # self.api_session.hooks['response'].append(
         #     lambda r, *args, **kwargs: r.raise_for_status(),
