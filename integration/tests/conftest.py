@@ -308,7 +308,9 @@ progression_ids = []
 progression_params = []
 for config_path in PROGRESSION_YMLS:
     with open(config_path, 'r', ) as pstream:
-        progression_ids.append(config_name)
+        progression_ids.append(
+            os.path.basename(config_path)
+        )
         progression_params.append(
             yaml.load(pstream.read()),
         )
