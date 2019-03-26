@@ -13,7 +13,7 @@ engine = create_engine(URL(
     password='postgres',
     port=5432,
     database='mtrain_test',
-    host='localhost'
+    host='postgres_testdb'
 ))
 
 Session = sessionmaker(bind=engine)
