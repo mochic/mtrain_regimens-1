@@ -5,7 +5,8 @@ import os
 import subprocess
 
 
-def init_regimen(mtrain_api_container):
+def init_assets(mtrain_api_container):
+    # add regimen and behavior file here
     subprocess.run(
         'docker cp ../regimen.yml %s:/home/mtrain/app/mtrain_api' % \
             mtrain_api_container,
@@ -52,7 +53,7 @@ def run_tests():
     )  # inherit parent process context
 
 
-init_regimen(
+init_assets(
     mtrain_api_container=os.environ['MTRAIN_CONTAINER'],
 )
 
