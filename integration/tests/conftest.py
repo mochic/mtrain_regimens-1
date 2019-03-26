@@ -89,7 +89,7 @@ class MtrainClient(object):
             response.raise_for_status()
 
     def create_mouse(self, mouse_id, initial_state):
-        return self.api_session \
+        response = self.api_session \
             .post(
                 self.mtrain_root + 'add_subject/',
                 {
@@ -97,6 +97,11 @@ class MtrainClient(object):
                     'initial_state': initial_state,
                 },
             )
+        
+        if response.status_code != 200:
+            response.raise_for_status()
+
+        return response.json()
 
     def create_regimen(self, regimen_dict):
         response = self.api_session \
