@@ -27,20 +27,7 @@ def init_user(
     username, 
     password, 
     mtrain_api_container,
-):
-    _, vector_script, = mkstemp(
-        suffix='.py',
-        dir='./assets',
-    )
-
-    with open(vector_script, 'w') as fstream:
-        fstream.write(
-            INIT_USER_SCRIPT_TEMPLATE.format(
-                username=username,
-                password=password,
-            )
-        )
-     
+):   
     subprocess.run(
         'docker cp {src} {dest}'.format(
             src='init_user_script.py',
