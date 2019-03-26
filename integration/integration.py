@@ -63,9 +63,9 @@ def run_tests():
 if __name__ == '__main__':
     import os
 
-    init_services(
-        mtrain_root=os.environ['MTRAIN_ROOT'],
-    )
+    # init_services(
+    #     mtrain_root=os.environ['MTRAIN_ROOT'],
+    # )
 
     try:
         init_user( 

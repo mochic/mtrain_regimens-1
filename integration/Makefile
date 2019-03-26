@@ -1,3 +1,5 @@
+services:
+	docker-compose up
 test:
 	pip install pipenv
 	pipenv install .
