@@ -4,7 +4,6 @@
 
 call:
 
-    $ make services
     $ make test
 
 ## notes
