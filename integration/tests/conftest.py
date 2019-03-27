@@ -173,7 +173,7 @@ class MtrainClient(object):
         if join:  # shared path thru code == better with less testing?
             mouse_meta['state'].update(
                 self.get_state(
-                    response['state']['id'],
+                    mouse_meta['state']['id'],
                     join=True,  # one of two possible contracts to have with get_state...other relies on join default not changing...
                 ),
             )  # update pointer with resolved object, we represent json as dict
