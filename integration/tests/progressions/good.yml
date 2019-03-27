@@ -49,7 +49,7 @@ progressions:
           response: 0
 
   - start_stage: TRAINING_3_images_A_10uL_reward
-    end_stage: TRAINING_4_images_A_training
+    end_stage: TRAINING_3_images_A_10uL_reward
     behavior_file: base
     epochs:
       - start: start
