@@ -292,8 +292,7 @@ class MtrainClient(object):
     def progress(self, mouse_id, behavior_session):
         response = self.api_session \
             .post(
-                self.mtrain_root + \
-                    'set_behavior_session/'
+                self.mtrain_root + 'set_behavior_session/',
                 data=json.dumps(behavior_session),
             )
         
