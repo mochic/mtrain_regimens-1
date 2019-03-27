@@ -161,8 +161,7 @@ class MtrainClient(object):
         response = self.api_session \
             .get(
                 self.mtrain_root + \
-                    'api/v1/' + \
-                    'subjects/%s' % mouse_id,
+                    'api/v1/subjects/%s' % mouse_id,
             )
 
         if response.status_code != 200:
@@ -191,14 +190,14 @@ class MtrainClient(object):
             response = self.api_session \
                 .get(
                     self.mtrain_root + \
-                    'api/v1/' + \
-                    'join/states/%s' % state_id
+                        'api/v1/join/states/%s' % state_id
                 )
         else:
-            response = self.api_session + \
-                'api/v1/' + \
-                'states/%s' % state_id \
-                .get()
+            response = self.api_session \
+                .get(
+                    self.mtrain_root + \
+                        'api/v1/states/%s' % state_id
+                )
         
         if response.status_code != 200:
             response.raise_for_status()
@@ -294,8 +293,7 @@ class MtrainClient(object):
         response = self.api_session \
             .post(
                 self.mtrain_root + \
-                    'set_behavior_session/%s' % \
-                    mouse_id,
+                    'set_behavior_session/'
                 data=json.dumps(behavior_session),
             )
         
