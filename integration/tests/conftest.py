@@ -39,14 +39,13 @@ PROGRESSION_YMLS = glob.glob(os.path.join(TEST_ROOT,'./progressions/*.yml'))
 
 # utils
 def resolve_epoch_bound(value, n_trials):
-    if isinstance(value, int) or \
-            isinstance(value, float):
+    if isinstance(value, int):
         return value
     elif isinstance(value, basestring):
         if value == 'start':
             return 0
         elif value == 'middle':
-            return n_trials / 2
+            return n_trials // 2
         elif value == 'end':
             return n_trials
     else:
