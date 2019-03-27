@@ -10,7 +10,7 @@ def test_regimen(
     assert mtrain_client.get_stage(mouse_id)['name'] == \
         progression_plan['initial_stage'], \
         'not at expected initial stage before progressions'
-    print([progression['start_stage'] for progression in progression_plan['progressions']])
+    
     for progression in progression_plan['progressions']:
         print(progression['start_stage'], progression['end_stage'])
         assert mtrain_client.get_stage(mouse_id)['name'] == \

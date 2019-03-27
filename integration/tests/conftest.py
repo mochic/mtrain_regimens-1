@@ -404,6 +404,7 @@ def progression_plan(
         'progressions': [],
     }
     for progression_dict in request.param['progressions']:
+        print(progression_dict)
         progression = {
             'start_stage': \
                 progression_dict['start_stage'],
