@@ -439,9 +439,9 @@ def progression_plan(
                 many=True,
             )
             progression['behavior_session'] = \
-                json.dumps({
+                {
                     'data_list': data_list_cs_sc, 
-                })
+                }
             
             progression_plan['progressions'] \
                 .append(progression)
