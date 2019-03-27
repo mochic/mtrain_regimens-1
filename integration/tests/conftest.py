@@ -415,10 +415,10 @@ def progression_plan(
 
         behavior_session = behavior_session_base \
             .copy(deep=True)
-        behavior_session_base['mouse_id'] = \
+        behavior_session['mouse_id'] = \
             mouse_meta['LabTracks_ID']
-        behavior_session_base['behavior_session_uuid'] = \
-            uuid.uuid4().hex
+        behavior_session['behavior_session_uuid'] = \
+            uuid.uuid4()
         for epoch in progression_dict['epochs']:
             idx_start = resolve_epoch_bound(
                 epoch['start'], 
