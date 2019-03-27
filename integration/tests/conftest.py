@@ -438,12 +438,13 @@ def progression_plan(
                 data_list_cs, 
                 many=True,
             )
-            progression['behavior_session'] = \
-                {
-                    'data_list': data_list_cs_sc, 
-                }
-            
-            progression_plan['progressions'] \
-                .append(progression)
-    print(progression_plan)
+
+        progression['behavior_session'] = \
+            {
+                'data_list': data_list_cs_sc, 
+            }
+        
+        progression_plan['progressions'] \
+            .append(progression)
+    
     return progression_plan
