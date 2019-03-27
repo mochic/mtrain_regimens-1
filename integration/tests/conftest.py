@@ -165,7 +165,7 @@ class MtrainClient(object):
                     'subjects/%s' % mouse_id,
             )
 
-        if response.status_coe != 200:
+        if response.status_code != 200:
             response.raise_for_status()
 
         mouse_meta = response.json()
