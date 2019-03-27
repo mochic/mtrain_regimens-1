@@ -59,7 +59,7 @@ def init_assets(*training_outputs):
 
 def run_tests():
     subprocess.run(
-        'pytest',
+        'pipenv run python -m pytest',  # pipenv pipes in our env vars...we need it :(...
         check=True,
         shell=True,
     )  # inherit parent process context
@@ -68,9 +68,9 @@ def run_tests():
 if __name__ == '__main__':
     import os
 
-    # init_services(
-    #     mtrain_root=os.environ['MTRAIN_ROOT'],
-    # )
+    init_services(
+        mtrain_root=os.environ['MTRAIN_ROOT'],
+    )
 
     try:
         init_user( 
