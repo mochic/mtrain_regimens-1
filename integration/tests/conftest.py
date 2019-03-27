@@ -228,10 +228,11 @@ class MtrainClient(object):
         self, 
         mouse_id,
     ):
-        return self.get_mouse(
+        mouse_meta = self.get_mouse(
             mouse_id, 
             join=True, 
-        )['stage']
+        )
+        return mouse_meta['state']['stage']
 
     def set_stage(
         self, 
