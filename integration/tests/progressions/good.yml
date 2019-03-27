@@ -81,22 +81,6 @@ progressions:
           response: 0
 
   - start_stage: TRAINING_3_images_A_10uL_reward
-    end_stage: TRAINING_3_images_A_10uL_reward
-    behavior_file: base
-    epochs:
-      - start: start
-        end: middle
-        overrides:
-          trial_type: go
-          response: 1
-          auto_rewarded: false
-      - start: middle
-        end: end
-        overrides:
-          trial_type: catch
-          response: 0
-
-  - start_stage: TRAINING_3_images_A_10uL_reward
     end_stage: TRAINING_4_images_A_training
     behavior_file: base
     epochs:
