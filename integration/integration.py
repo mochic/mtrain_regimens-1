@@ -8,8 +8,13 @@ import time
 
 
 def init_services(mtrain_root):
-    daemon = subprocess.Popen(
-        ['docker-compose', 'up', ], 
+    # daemon = subprocess.Popen(
+    #     ['docker-compose', 'up', ], 
+    # )
+    subprocess.run(
+        'docker-compose up -d',
+        check=True,
+        shell=True,
     )
     logging.info('waiting for services to be available...', )
     tic = time.time()
