@@ -1,8 +1,14 @@
 version: '3'
 services:
+  postgres_testdb:
+    image: postgres:9.4
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=mtrain_test
+
   mtrain_api:
     image: docker.aibs-artifactory.corp.alleninstitute.org/mtrain_api:0.2.8
-    container_name: ${MTRAIN_CONTAINER}
     working_dir: /home/mtrain/app/mtrain_api
     ports:
       - '5000:5000'
@@ -14,10 +20,3 @@ services:
       - ./scripts:/home/mtrain/app/mtrain_api/scripts
     depends_on:
       - postgres_testdb
-
-  postgres_testdb:
-    image: postgres:9.4
-    ports:
-      - '5432:5432'
-    environment:
-      - POSTGRES_DB=mtrain_test
